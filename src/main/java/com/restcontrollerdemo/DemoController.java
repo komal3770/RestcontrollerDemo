@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class DemoController {
 	
+	static Integer counter = 1;
+	
 	@GetMapping
 	public String home(HttpSession session) {
-		Integer counter=1;
 		if(session.getAttribute("counter")!=null) {
-			counter = Integer.valueOf(session.getAttribute("counter").toString())+1;
+			counter = counter+1;
 		}
 		
 		session.setAttribute("counter", counter);
