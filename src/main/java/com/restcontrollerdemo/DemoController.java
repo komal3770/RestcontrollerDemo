@@ -1,8 +1,5 @@
 package com.restcontrollerdemo;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpHeaders;
@@ -11,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,12 +27,16 @@ public class DemoController {
 	}
 	
 	@GetMapping(value = "/test1", produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<Map<String,String>> getJSONOrXML(){
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("User", "Komal");
-		map.put("Company", "Synergy");
+	public ResponseEntity<TestResponse> getJSONOrXML(@RequestParam String format){
+		TestResponse obj = new TestResponse();
+		obj.setCompany("STS");
+		obj.setName("Komal");
 		HttpHeaders header = new HttpHeaders();
-		header.setContentType(MediaType.valueOf(MediaType.APPLICATION_XML_VALUE));
-		return new ResponseEntity<Map<String,String>>(map,header,HttpStatus.OK);
+		if(format.equals("xml"))
+			header.setContentType(MediaType.valueOf(MediaType.APPLICATION_XML_VALUE));
+		else
+			header.setContentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE));
+		
+		return new ResponseEntity<TestResponse>(obj,header,HttpStatus.OK);
 	}
 }
